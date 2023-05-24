@@ -1,0 +1,8 @@
+name: meins_modifiers
+version: '${project.version}'
+main: de.ender.Main.Main
+api-version: 1.19
+depend: [ meins_core ]
+authors: [ ender ]
+description: enchantment like Main
+website: https://github.com/github-dotEXE
