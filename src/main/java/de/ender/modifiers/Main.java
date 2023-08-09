@@ -11,9 +11,9 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Log.success("Enabling Meins Modifiers...");
+        Log.enable(this);
         plugin = this;
-        UpdateChecker.check(getDescription().getVersion(),"github-dotEXE","meins_modifiers","master");
+        new UpdateChecker(this,"master").check().downloadLatestMeins();
 
         ModifierManager.registerModifier(new TelekinesisModifier());
         ModifierManager.registerModifier(new AutoSmeltModifier());
@@ -27,7 +27,7 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Log.success("Disabling Meins Modifiers");
+        Log.disable(this);
     }
     public static Main getPlugin() {
         return plugin;

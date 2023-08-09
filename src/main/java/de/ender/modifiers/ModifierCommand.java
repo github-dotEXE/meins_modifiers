@@ -2,6 +2,7 @@ package de.ender.modifiers;
 
 import de.ender.core.itemtypes.ItemTypes;
 import de.ender.core.modifiers.ModifierManager;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ModifierCommand implements CommandExecutor, TabCompleter {
+    private static final MiniMessage miniMessage = MiniMessage.miniMessage();
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof Player){
@@ -27,18 +29,20 @@ public class ModifierCommand implements CommandExecutor, TabCompleter {
             switch (args[0]){
                 case "apply":
                     worked = ModifierManager.applyModifier(item,ModifierManager.getModifierByName(args[1]));
-                    if(!worked) player.sendMessage(ChatColor.GOLD+"Failed to put on modifier "+ ChatColor.DARK_PURPLE + args[1] +ChatColor.GOLD+"!");
-                    else player.sendMessage(ChatColor.GREEN+"Successfully applied modifier "+ ChatColor.DARK_PURPLE + args[1] +ChatColor.GREEN+"!");
+                    if(!worked) player.sendMessage(miniMessage.deserialize("<gold>Failed to put on modifier <dark_purple>"+ args[1] +"<gold>!"));
+                    else player.sendMessage(miniMessage.deserialize("<green>Successfully applied modifier <dark_purple>"+ args[1] +"<green>!"));
                     break;
                 case "remove":
                     worked = ModifierManager.removeModifier(item,ModifierManager.getModifierByName(args[1]));
-                    if(!worked) player.sendMessage(ChatColor.GOLD+"Failed to remove modifier "+ ChatColor.DARK_PURPLE + args[1] +ChatColor.GOLD+"!");
-                    else player.sendMessage(ChatColor.GREEN+"Successfully removed modifier "+ ChatColor.DARK_PURPLE + args[1] +ChatColor.GREEN+"!");
+                    if(!worked) player.sendMessage(miniMessage.deserialize("<gold>Failed to remove modifier <dark_purple>"+ args[1] +"<gold>!"));
+                    else player.sendMessage(miniMessage.deserialize("<green>Successfully removed modifier <dark_purple>"+ args[1] +"<green>!"));
                     break;
                 case "info":
-                    player.sendMessage(ChatColor.DARK_GRAY+"ModifierInfo:");
-                    player.sendMessage(ChatColor.DARK_AQUA+"Registered Modifiers: ");
-                    ModifierManager.getAll().forEach((modifier) ->player.sendMessage(ChatColor.AQUA+modifier.getName()+": "+ChatColor.LIGHT_PURPLE + modifier.forTypes() +"; "+ChatColor.DARK_PURPLE +ItemTypes.getExact(modifier.forTypes())));
+                    player.sendMessage(miniMessage.deserialize("<dark_gray>ModifierInfo:"));
+                    player.sendMessage(miniMessage.deserialize("<dark_aqua>Registered Modifiers: "));
+                    ModifierManager.getAll().forEach((modifier) ->
+                            player.sendMessage(miniMessage.deserialize("<aqua>"+modifier.getName()+": <light_purple>"+
+                                    modifier.forTypes() +"; <dark_purle>"+ItemTypes.getExact(modifier.forTypes()))));
                     break;
             }
         }
